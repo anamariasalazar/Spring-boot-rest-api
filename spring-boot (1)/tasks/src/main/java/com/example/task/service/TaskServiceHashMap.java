@@ -1,7 +1,6 @@
-package com.example.springboot.service;
+package com.example.task.service;
 
-import com.example.springboot.data.User;
-import com.example.springboot.dto.UserDto;
+import com.example.task.data.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,34 +8,33 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class UserServiceHashMap implements UserService{
-    private final HashMap<String, User> userHashMap = new HashMap<>();
+public class TaskServiceHashMap implements TaskService {
+    private final HashMap<String, Task> taskHashMap = new HashMap<>();
 
     @Override
-    public Boolean create(User user) {
+    public Boolean create(Task task) {
         try {
-            userHashMap.put(user.getId(), user);
+            taskHashMap.put(task.getId(), task);
             return true;
         }catch (Exception e){
             return false;
-        }
+        }    }
+
+    @Override
+    public Task findById(String id) {
+        return taskHashMap.get(id);
     }
 
     @Override
-    public User findById(String id) {
-        return userHashMap.get(id);
-    }
-
-    @Override
-    public List<User> getAll() {
-        ArrayList<User> users = new ArrayList<>(userHashMap.values());
-        return users;
+    public List<Task> getAll() {
+        ArrayList<Task> tasks = new ArrayList<>(taskHashMap.values());
+        return new ArrayList<Task>(taskHashMap.values());
     }
 
     @Override
     public Boolean deleteById(String id) {
-        try {
-            userHashMap.remove(id);
+        try{
+            taskHashMap.remove(id);
             return true;
         }catch (Exception e){
             return false;
@@ -44,9 +42,9 @@ public class UserServiceHashMap implements UserService{
     }
 
     @Override
-    public Boolean update(String userId,User user) {
+    public Boolean update(Task task, String id) {
         try {
-            userHashMap.put(userId,user);
+            taskHashMap.put(id,task);
             return true;
         }catch (Exception e){
             return false;
@@ -55,11 +53,12 @@ public class UserServiceHashMap implements UserService{
 
     @Override
     public String next(){
-        ArrayList<String> keys = new ArrayList<>(userHashMap.keySet());
+        ArrayList<String> keys = new ArrayList<>(taskHashMap.keySet());
         String id="1";
         if (keys.size()>0){
             id = String.valueOf(Integer.parseInt(keys.get(keys.size()-1))+1);
         }
         return id;
     }
+
 }
